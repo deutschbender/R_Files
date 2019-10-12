@@ -27,18 +27,23 @@ rm(token_r)
 
 
 # Get siret from a name ----
+company_name <- "AEROSHOES - DISTRIBUIDORES DE CALCADO"
+
+## api call parameters
 api_headers <- c('Accept' = 'application/json', 'Authorization' = paste0('Bearer ', access_token))
+company_name <- URLencode(company_name, reserved = TRUE)
+query_fieds <- URLencode('siret,denominationUniteLegale', reserved = TRUE)
 
-multicrit_query <- URLencode("denominationUniteLegale:premiere vision", reserved = TRUE)
-query_fieds <- URLencode("siret,denominationUniteLegale", reserved = FALSE)
-
+## api call
 siret_r <- GET(paste0(insee_api_base_url,
-                     'entreprises/sirene/V3/siret?q=',
-                     multicrit_query,
-                     '"%22&champs=',
-                     query_fieds),
-              add_headers('', .headers = api_headers))
+                      'entreprises/sirene/V3/siret?q=denominationUniteLegale%3A%22',
+                      company_name,
+                      '%22&champs=',
+                      query_fieds),
+               add_headers('', .headers = api_headers))
 
+## retrive data from api call
+r_content <- fromJSON(rawToChar(siret_r$content))
 
 
 # revoke token ----
