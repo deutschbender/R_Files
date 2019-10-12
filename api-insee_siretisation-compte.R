@@ -16,7 +16,7 @@ basic_auth = c('Authorization' = paste0('Basic ', caTools::base64encode(paste0(i
 
  
 # get token ----
-token_r <- POST(insee_api_base_url, "token?grant_type=client_credentials&validity_period=86400",
+token_r <- POST(paste0(insee_api_base_url, "token?grant_type=client_credentials&validity_period=86400"),
   add_headers('', .headers = basic_auth))
 
 ##  retreive access token content
