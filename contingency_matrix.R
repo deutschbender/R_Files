@@ -2,7 +2,7 @@
 # Chargement des données de log
 
 library(data.table)
-logTrackingSemaine <- read.delim("C:/Users/Julien/Documents/r_scripts/fichiers_ldlc/Groupe - Log Neolane/logTrackingSemaine.txt")
+logTrackingSemaine <- read.delim("/logTrackingSemaine.txt")
 
 # transformation de l'id en factor 
 
