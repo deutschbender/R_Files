@@ -120,12 +120,7 @@ final_grades_session <- tf$Session()
 final_grades_session$run(tf$global_variables_initializer())
 
 
-
-
-
 ## Training your model
-
-
 # Train your model
 for (step in 1:3750) {
 	Finalgradessession$run(train)
@@ -133,3 +128,17 @@ for (step in 1:3750) {
     	cat("Step = ", step, "Estimate w = ", Finalgradessession$run(w), 
         "Estimate b =", Finalgradessession$run(b), "\n")
 }
+
+## Evaluating your model
+# Calculate the predicted grades
+grades_actual <- studentgradeprediction_test$Finalpercent
+grades_predicted <- as.vector(Finalgradessession$run(w)) * 
+                    studentgradeprediction_test$minstudytime +
+                    as.vector(Finalgradessession$run(b))
+grades_predicted
+# Plot the actual and predicted grades
+plot(grades_actual, grades_predicted, pch=19, col='red')
+
+# Run a correlation 
+cor(grades_actual, grades_predicted)
+
