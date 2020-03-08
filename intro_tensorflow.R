@@ -142,3 +142,33 @@ plot(grades_actual, grades_predicted, pch=19, col='red')
 # Run a correlation 
 cor(grades_actual, grades_predicted)
 
+## Linear with estmator API
+
+## Defining feature columns
+# Define all four of your feature columns
+ftr_colns <- feature_columns(
+	tf$feature_column$numeric_column("minstudytime"),
+  	tf$feature_column$numeric_column("absences"),
+  	tf$feature_column$numeric_column("failures"),
+  	tf$feature_column$categorical_column_with_identity("Rural",2)
+)
+
+# Choose the correct model
+grademodel <- linear_regressor(feature_columns = ftr_colns)
+
+# Define your input function
+grade_input_fn <- function(data){
+  	input_fn(data,
+            features = c("minstudytime", "absences", "failures", "Rural"),
+  			response = "Finalpercent")
+}
+
+
+# Calculate the predictions
+predictoutput <- predict(grademodel, input_fn = grademodel_input_fn(studentgradeprediction_test))
+
+# Plot actual and predicted values
+plot(studentgradeprediction_test$Finalpercent, as.numeric(predictoutput$predictions), xlab = "actual_grades", ylab = "predicted_grades", pch=19, col='red')
+
+# Calculate the correlation
+cor(as.numeric(predictoutput$predictions), studentgradeprediction_test$Finalpercent)
