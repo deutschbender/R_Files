@@ -198,3 +198,68 @@ model %>%
         epochs = 25, 
       	batch_size = 32,
       	validation_split = .2)
+		
+## Evaluate the model
+score <- model %>%
+  evaluate(
+    test_x, 
+    test_y)
+
+# Call up the accuracy 
+score$acc		
+
+## Predict based on your model
+predictedclasses <- model %>%
+  predict_classes(newdata_x)
+
+# Print predicted classes with customers' names
+rownames(predictedclasses) <- c('Jasmit', 'Banjeet')
+predictedclasses		
+		
+
+## Fit the model and define callbacks
+model %>%
+	fit (
+        x = train_x, y = train_y,epochs = 25, 
+      	batch_size = 32, validation_split = .2, 
+      	callbacks = callback_tensorboard("logs/run_1")
+    )
+
+# Call TensorBoard
+tensorboard("logs/run_1")
+
+		
+## Estimator API 
+# Train the model
+train(dnnclassifier, 
+    input_fn = shopping_input_function(shopper_train))
+
+# Evaluate the model by correcting the error
+evaluate(dnnclassifier,
+         input_fn = shopping_input_function(shopper_train))	
+		
+		
+##Exercies complet 
+		DNN classifier using Keras API
+The Banknote_Authentication dataset contains information based on genuine and forged banknotes. Extracted image features from banknotes include kurtosis, wavelength, skewness, and entropy. The Class attribute signifies whether a banknote was real (0) or forged (1).
+
+You'll use this data to create a DNN Classifier using the Keras API. In this activity, you'll create a sequential model and train, test, and evaluate the model using the Bank Note Authentication dataset to explore how accurately you can detect a forged banknote.
+
+For this exercise, the training and testing datasets have been split for you (banknote_authentication_train and banknote_authentication_test).
+		
+# Create a sequential model and the network architecture
+ourdnnmodel <- keras_model_sequential() %>%
+  layer_dense(units = 10, activation = "relu", input_shape = ncol(train_x)) %>%
+  layer_dense(units = 5, activation = 'relu') %>%
+  layer_dense(units = 1)	
+
+compile(optimizer = "rmsprop", loss = "mse", metrics = c("mae", "accuracy"))
+		
+# Fit your model
+learn <- ourdnnmodel %>% fit(x = train_x, y = train_y, epochs = 25,
+         batch_size = 32, validation_split = .2, verbose = FALSE)
+
+# Run the learn function
+learn
+		
+		
