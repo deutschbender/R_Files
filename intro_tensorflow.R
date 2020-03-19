@@ -172,3 +172,29 @@ plot(studentgradeprediction_test$Finalpercent, as.numeric(predictoutput$predicti
 
 # Calculate the correlation
 cor(as.numeric(predictoutput$predictions), studentgradeprediction_test$Finalpercent)
+
+#Chapter 3 - Deep neural network with Keras API ----
+
+
+## Define the model
+model <-  keras_model_sequential()
+model %>%
+	layer_dense(units=15, activation = 'relu', input_shape = 8) %>%
+	layer_dense(units=5, activation = 'relu') %>%
+	layer_dense(units=1)
+
+## Compile the model
+model %>%
+	compile (
+        optimizer = 'rmsprop',
+        loss = 'mse',
+        metrics = c('accuracy')
+
+## Fit the model
+model %>%
+	fit(
+        x = train_x,
+        y = train_y,
+        epochs = 25, 
+      	batch_size = 32,
+      	validation_split = .2)
