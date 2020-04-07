@@ -277,3 +277,30 @@ model_lesson1 %>%
               kernel_regularizer = regularizer_l2(l = 0.1)) %>%
   layer_dense(units=5, activation = 'relu') %>%
   layer_dense(units=1)
+
+		# Compile the model
+model_lesson1 %>%
+  compile (
+    optimizer = 'rmsprop',
+    loss = 'mse',
+    metrics = c('accuracy')
+  )
+
+# Fit the model
+model_lesson1 %>%
+  fit (
+    x = train_x, y = train_y, epochs = 25, 
+    batch_size = 32, validation_split = .2)
+		
+		
+# Evaluate the model
+score_lesson1 <- model_lesson1 %>%
+  evaluate(
+    test_x, 
+    test_y)
+
+# Call the accuracy and loss
+score_lesson1$acc
+score_lesson1$loss
+		
+		
