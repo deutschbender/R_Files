@@ -263,3 +263,17 @@ learn <- ourdnnmodel %>% fit(x = train_x, y = train_y, epochs = 25,
 learn
 		
 		
+# CHAPITRE IV
+		
+		
+		
+# Define the model
+model_lesson1 <-  keras_model_sequential()
+
+# Add the regularizer
+model_lesson1 %>%
+  layer_dense(units=15, activation = 'relu', 
+              input_shape = 8, 
+              kernel_regularizer = regularizer_l2(l = 0.1)) %>%
+  layer_dense(units=5, activation = 'relu') %>%
+  layer_dense(units=1)
