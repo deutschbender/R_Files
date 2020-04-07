@@ -263,7 +263,7 @@ learn <- ourdnnmodel %>% fit(x = train_x, y = train_y, epochs = 25,
 learn
 		
 		
-# CHAPITRE IV
+# CHAPITRE IV ---- 
 		
 		
 		
@@ -303,4 +303,33 @@ score_lesson1 <- model_lesson1 %>%
 score_lesson1$acc
 score_lesson1$loss
 		
+## DRopout in Estimator API
 		
+# use a dropout technique to assess whether you can increase the accuracy of,
+# and lower the chances of overfitting to, our DNN Classifier model using the TFEstimators API.		
+		
+# Define the feature columns
+featcols <- feature_columns(
+  tf$feature_column$numeric_column("Var"), 
+  tf$feature_column$numeric_column("Skew"), 
+  tf$feature_column$numeric_column("Kurt"), 
+  tf$feature_column$numeric_column("Entropy")
+)
+
+# Create the input function 
+banknote_input_fn <- function(data){
+  input_fn(data, 
+           features = c("Var","Skew", "Kurt", "Entropy"), 
+           response = "Class")
+}
+
+# Create your dnn_classifier model
+mymodel <- dnn_classifier(feature_columns = featcols, 
+               hidden_units = c(40, 60, 10), 
+               n_classes = 2, 
+               label_vocabulary = c("N", "Y"), 
+               dropout = 0.2)
+
+# Train the model
+train(mymodel, 
+      input_fn = banknote_input_fn(banknote_authentication_train))
