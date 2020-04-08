@@ -342,3 +342,27 @@ final_evaluation <- evaluate(mymodel,
 # Call up the accuracy and precision of your evaluated model
 final_evaluation$accuracy
 final_evaluation$precision
+		
+		
+## Tuning Htperparameters with tfruns
+		
+# Tune the run
+runs <- tuning_run(
+		modelsourcecode_script, 
+		flags = list(dropout = c(0.2, 0.3, 0.4))
+)
+
+# View the outcome
+runs[order(runs$eval_accuracy, decreasing = TRUE), ]
+
+		
+# Tune the run
+runs <- tuning_run(
+		modelsourcecode_script, 
+		flags = list(dropout = c(0.2, 0.3, 0.4), 
+                    activation_fn = c("relu", "softmax") )
+)
+
+# View the outcome
+runs[order(runs$eval_accuracy, decreasing = TRUE), ]
+		
