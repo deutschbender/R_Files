@@ -333,3 +333,12 @@ mymodel <- dnn_classifier(feature_columns = featcols,
 # Train the model
 train(mymodel, 
       input_fn = banknote_input_fn(banknote_authentication_train))
+		
+# Evaluate your model using the testing dataset
+final_evaluation <- evaluate(mymodel, 
+                            input_fn = banknote_input_fn(
+                              banknote_authentication_test))
+
+# Call up the accuracy and precision of your evaluated model
+final_evaluation$accuracy
+final_evaluation$precision
