@@ -62,3 +62,45 @@ lineup_h40_complete <- mutate(lineup, cluster = clusters_h40)
 # Plot the positions of the players and color them using their cluster for height = 20
 ggplot(lineup_h20_complete, aes(x = x, y = y, color = factor(cluster))) +
   geom_point()
+
+
+# Calculate Euclidean distance between customers
+dist_customers <- dist(customers_spend)
+
+# Generate a complete linkage analysis 
+hc_customers <- hclust(dist_customers, method = "complete")
+
+# Plot the dendrogram
+plot(hc_customers)
+
+# Create a cluster assignment vector at h = 15000
+clust_customers <- cutree(hc_customers, h = 15000)
+
+# Generate the segmented customers data frame
+segment_customers <- mutate(customers_spend, cluster = clust_customers)
+
+
+dist_customers <- dist(customers_spend)
+hc_customers <- hclust(dist_customers)
+clust_customers <- cutree(hc_customers, h = 15000)
+segment_customers <- mutate(customers_spend, cluster = clust_customers)
+
+# Count the number of customers that fall into each cluster
+count(segment_customers, cluster)
+
+# Color the dendrogram based on the height cutoff
+dend_customers <- as.dendrogram(hc_customers)
+dend_colored <- color_branches(dend_customers, h = 15000)
+
+# Plot the colored dendrogram
+plot(dend_colored)
+
+# Calculate the mean for each category
+segment_customers %>% 
+  group_by(cluster) %>% 
+  summarise_all(list(mean))
+
+###### Chapeter 3 
+## K-MEANS CLUSTERING
+####
+
