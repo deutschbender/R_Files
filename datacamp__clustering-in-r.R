@@ -136,3 +136,57 @@ elbow_df <- data.frame(
 ggplot(elbow_df, aes(x = k, y = tot_withinss)) +
   geom_line() +
   scale_x_continuous(breaks = 1:10)
+
+
+#### Silhouette ----
+library(cluster)
+
+# Generate a k-means model using the pam() function with a k = 2
+pam_k2 <- pam(lineup, k = 2)
+
+# Plot the silhouette visual for the pam_k2 model
+plot(silhouette(pam_k2))
+
+# Generate a k-means model using the pam() function with a k = 3
+pam_k3 <- pam(lineup, k = 3)
+
+# Plot the silhouette visual for the pam_k3 model
+plot(silhouette(pam_k3))
+
+
+# Use map_dbl to run many models with varying value of k
+sil_width <- map_dbl(2:10,  function(k){
+  model <- pam(x = customers_spend, k = k)
+  model$silinfo$avg.width
+})
+
+# Generate a data frame containing both k and sil_width
+sil_df <- data.frame(
+  k = 2:10,
+  sil_width = sil_width
+)
+
+# Plot the relationship between k and sil_width
+ggplot(sil_df, aes(x = k, y = sil_width)) +
+  geom_line() +
+  scale_x_continuous(breaks = 2:10)
+
+
+set.seed(42)
+
+# Build a k-means model for the customers_spend with a k of 2
+model_customers <- kmeans(customers_spend, centers = 2)
+
+# Extract the vector of cluster assignments from the model
+clust_customers <- model_customers$cluster
+
+# Build the segment_customers data frame
+segment_customers <- mutate(customers_spend, cluster = clust_customers)
+
+# Calculate the size of each cluster
+count(segment_customers, cluster)
+
+# Calculate the mean for each category
+segment_customers %>% 
+  group_by(cluster) %>% 
+  summarise_all(list(mean))
