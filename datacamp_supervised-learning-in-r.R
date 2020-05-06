@@ -1,4 +1,4 @@
-#### CAPTER 1 ####
+#### CHAPTER 1 : KNN ####
 ##################
 
 # Load the 'class' package
@@ -29,3 +29,33 @@ table(signs_pred, signs_actual)
 
 # Compute the accuracy
 mean(signs_pred == signs_actual)
+
+# Compute the accuracy of the baseline model (default k = 1)
+k_1 <- knn(train = signs[-1], test = signs_test[-1], cl = sign_types)
+mean(k_1 == signs_actual)
+
+# Modify the above to set k = 7
+k_7 <- knn(train = signs[-1], test = signs_test[-1], cl = sign_types, k = 7)
+mean(k_7 == signs_actual)
+
+# Set k = 15 and compare to the above
+k_15 <- knn(train = signs[-1], test = signs_test[-1], cl = sign_types, k = 15)
+mean(k_15 == signs_actual)
+
+# Use the prob parameter to get the proportion of votes for the winning class
+sign_pred <- knn(train = signs[-1], test = signs_test[-1], cl = sign_types, k = 7, prob = T)
+
+# Get the "prob" attribute from the predicted classes
+sign_prob <- attr(sign_pred, "prob")
+
+# Examine the first several predictions
+head(sign_pred)
+
+# Examine the proportion of votes for the winning class
+head(sign_prob)
+
+#### CHAPTER 2 : NAIVE BAYES ####
+################################
+
+
+
