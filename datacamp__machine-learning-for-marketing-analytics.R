@@ -1,3 +1,6 @@
+#### CHAPTER 1 - CUSTOMER LIFETIME VALUE ####
+#############################################
+
 library(rms)
 library(readr)
 library(dplyr)
@@ -90,3 +93,8 @@ predSales5 <- predict(salesModel2, newdata = salesData2_4)
 
 # calculating mean of future sales
 mean(predSales5)
+
+#### CHAPTER 2 - CHURN PREVENTION ####
+######################################
+
+
